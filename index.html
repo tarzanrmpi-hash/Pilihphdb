@@ -1,5 +1,5 @@
-<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><title>Pilih Photo - TarzanPhoto</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><title>TarzanPhoto - Versi HP</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Playfair+Display:ital,wght@1,600;1,900&display=swap" rel="stylesheet"><style>
 :root{--bg:#0e0f13;--p:#181a21;--p2:#20232c;--b:#2c303b;--t:#eceef3;--m:#9aa1b2;--a:#6aa8ff;--a2:#8a6bff;--ok:#3ddc84;--g:linear-gradient(135deg,#4f9cf9,#8a5cff)}
 *{box-sizing:border-box}
@@ -95,11 +95,39 @@ main{padding-bottom:96px}
 
 header{justify-content:center;gap:14px 22px}.brand{margin-right:0}
 .stk .bar,.stk .bar.tabs{justify-content:center}
+
+@media(max-width:760px){
+html{background-image:none}body{font-size:13.5px}
+img{-webkit-touch-callout:none}
+header{position:static;padding:8px 10px;gap:8px;justify-content:space-between}
+.brand svg{width:34px;height:34px}.brand strong{font-size:19px}.brand small{font-size:8.5px;letter-spacing:.3em}
+.stp{width:100%;justify-content:space-between}
+.stp button{flex:1;justify-content:center;padding:7px 4px;gap:5px;font-size:12px}
+.stp i{width:19px;height:19px;font-size:11px}
+#bk{padding:5px 12px;font-size:12px}
+.stk{top:0!important;margin-bottom:8px}
+.bar{padding:8px 10px;gap:6px}.bar button{padding:7px 10px;font-size:12.5px}
+.stk .bar{justify-content:center}
+.stk .bar.tabs,.bar.tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start!important;padding:4px 10px 8px;scrollbar-width:none}
+.bar.tabs button{white-space:nowrap;flex:none}
+.grid{grid-template-columns:repeat(2,1fr)!important;gap:8px;padding:4px 10px 24px}
+.card>img{height:120px}.card .r{gap:3px;padding:5px;flex-wrap:wrap}.card .r button{padding:5px 8px;font-size:12px;min-height:34px}
+.card.sel::after{font-size:9px;padding:2px 6px}
+.bb{padding:8px 10px calc(8px + env(safe-area-inset-bottom));justify-content:center}
+main{padding-bottom:84px}
+.hero{padding:28px 16px}.hero h2{font-size:23px}.ico{width:78px;height:78px}.cta button{padding:12px 24px}
+#st{height:54vh}
+#ov>.bar span{display:none}
+.panes{padding:2px 6px 8px;gap:6px}
+.panes.n2,.panes.n3{grid-template-columns:1fr!important}
+.panes.n2{grid-template-rows:repeat(2,1fr)!important}.panes.n3{grid-template-rows:repeat(3,1fr)!important}
+.pt{top:6px;left:6px;gap:4px;padding:3px}.pt .nm{display:none}.pt button{padding:4px 9px}
+}
 </style></head><body>
 <header><div class=brand><svg viewBox="0 0 48 48"><defs><linearGradient id="lgr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f9cf9"/><stop offset="1" stop-color="#a05cff"/></linearGradient></defs><rect width="48" height="48" rx="13" fill="url(#lgr)"/><path d="M14 17h4l2-3h8l2 3h4a3 3 0 0 1 3 3v13a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V20a3 3 0 0 1 3-3z" fill="#fff" fill-opacity=".96"/><circle cx="24" cy="26.5" r="6.5" fill="url(#lgr)"/><circle cx="24" cy="26.5" r="3.2" fill="#fff" fill-opacity=".9"/><circle cx="33" cy="21" r="1.2" fill="url(#lgr)"/></svg><div><small>Pilih Photo</small><strong>TarzanPhoto</strong></div></div>
 <nav class=stp><button data-a=step data-v=1><i>1</i>Seleksi</button><button data-a=step data-v=2><i>2</i>Crop</button><button data-a=step data-v=3><i>3</i>Bingkai</button><button data-a=step data-v=4><i>4</i>Simpan</button></nav><button id=bk data-a=back class=warn hidden>↩ Pilih Kembali</button></header>
 <main id=m></main><div id=ov hidden></div>
-<input type=file id=f1 hidden multiple accept=".jpg,.jpeg,.cr2,.cr3,.nef,.arw">
+<input type=file id=f1 hidden multiple accept="image/*,.cr2,.cr3,.nef,.arw">
 <input type=file id=f2 hidden webkitdirectory>
 <input type=file id=f3 hidden multiple accept="image/*">
 <script>
@@ -119,10 +147,10 @@ function sof(b){let i=2;while(i<b.length-8){if(b[i]!=255){i++;continue}const m=b
 function exifOri(b){const dv=new DataView(b.buffer,b.byteOffset,b.byteLength);for(let i=0;i<b.length-12;i++)if(b[i]==69&&b[i+1]==120&&b[i+2]==105&&b[i+3]==102&&!b[i+4])return tori(dv,i+6);return 0}
 async function opn(bl,o){try{return[await createImageBitmap(bl,{imageOrientation:o?'none':'from-image'}),o]}catch(e){}
 try{return[await createImageBitmap(bl),0]}catch(e){}
-try{const hd=new Uint8Array(await bl.slice(0,65536).arrayBuffer()),d=sof(hd);if(d){const k=Math.min(1,3200/Math.max(d[0],d[1]));return[await createImageBitmap(bl,{imageOrientation:'none',resizeWidth:Math.round(d[1]*k),resizeHeight:Math.round(d[0]*k),resizeQuality:'medium'}),o||exifOri(hd)]}}catch(e){}
+try{const hd=new Uint8Array(await bl.slice(0,65536).arrayBuffer()),d=sof(hd);if(d){const k=Math.min(1,2200/Math.max(d[0],d[1]));return[await createImageBitmap(bl,{imageOrientation:'none',resizeWidth:Math.round(d[1]*k),resizeHeight:Math.round(d[0]*k),resizeQuality:'medium'}),o||exifOri(hd)]}}catch(e){}
 return[await ldi(await rd(bl)),0]}
 async function decode(f,max){let m,o=0;
-if(/^jpe?g$/.test(E(f.name)))[m,o]=await opn(f,0);
+if(/^(jpe?g|png|webp)$/.test(E(f.name)))[m,o]=await opn(f,0);
 else{const b=new Uint8Array(await f.arrayBuffer()),js=findJpegs(b),o0=rawOri(b);if(!js.length)throw new Error('preview JPEG tidak ditemukan di file ('+Math.round(b.length/1e6)+' MB)');
 for(const j of js){try{[m,o]=await opn(new Blob([b.subarray(j[0],j[1])],{type:'image/jpeg'}),o0);break}catch(e){}}
 if(!m)throw new Error('preview tidak bisa dibaca ('+js.length+' kandidat)')}
@@ -137,9 +165,9 @@ async function gu(p){if(p.du)return p.du;let b=p.blob;if(p.rot){const m=await cr
 function rcv(c,d,max){const iw=c.naturalWidth||c.width,ih=c.naturalHeight||c.height,k=max?Math.min(1,max/Math.max(iw,ih)):1,W=iw*k,H=ih*k,o=document.createElement('canvas'),s=d%180;o.width=Math.round(s?H:W);o.height=Math.round(s?W:H);const x=o.getContext('2d');x.translate(o.width/2,o.height/2);x.rotate(d*Math.PI/180);x.drawImage(c,-W/2,-H/2,W,H);return o}
 async function apply(p){const m=await createImageBitmap(p.blob),t=rcv(m,p.rot,300),q=p.rot%180;p.w=q?m.height:m.width;p.h=q?m.width:m.height;m.close();p.th=t.toDataURL('image/jpeg',.7);p.du=null}
 const Q=[],key=f=>(f.webkitRelativePath||f.name)+'|'+f.size+'|'+f.lastModified,pth=f=>f.webkitRelativePath||f.name;let busy=0;
-function pump(){const mx=Q.some(p=>p.file.size>2e7)?1:2;while(busy<mx&&Q.length){busy++;job(Q.shift()).finally(()=>{busy--;pump()})}}
-async function job(p){await new Promise(r=>setTimeout(r,20));let st='baca';try{const c=await decode(p.file,3200);st='encode';p.blob=await c2b(c,.9);st='tampil';await apply(p)}catch(e){p.err=st+': '+((e&&e.message)||e)}R()}
-function addFiles(fs){const seen=new Set(S.P.map(p=>key(p.file)));fs=[...fs].filter(f=>f&&/\.(jpe?g|cr2|cr3|nef|arw)$/i.test(f.name)&&!seen.has(key(f))).sort((x,y)=>pth(x).localeCompare(pth(y),undefined,{numeric:true}));
+function pump(){const mx=1;while(busy<mx&&Q.length){busy++;job(Q.shift()).finally(()=>{busy--;pump()})}}
+async function job(p){await new Promise(r=>setTimeout(r,20));let st='baca';try{const c=await decode(p.file,2200);st='encode';p.blob=await c2b(c,.9);st='tampil';await apply(p)}catch(e){p.err=st+': '+((e&&e.message)||e)}R()}
+function addFiles(fs){const seen=new Set(S.P.map(p=>key(p.file)));fs=[...fs].filter(f=>f&&/\.(jpe?g|png|webp|cr2|cr3|nef|arw)$/i.test(f.name)&&!seen.has(key(f))).sort((x,y)=>pth(x).localeCompare(pth(y),undefined,{numeric:true}));
 const q=fs.map(f=>({id:++nid,file:f,name:f.name,rot:0,lvl:1,sel:0}));S.P.push(...q);Q.push(...q);R();pump()}
 async function walk(en,out){if(en.isFile)out.push(await new Promise(r=>en.file(r,()=>r(null))));else{const rd=en.createReader();let b;do{b=await new Promise(r=>rd.readEntries(r,()=>r([])));for(const x of b)await walk(x,out)}while(b.length)}}
 /* ---------- langkah 1: seleksi ---------- */
@@ -149,13 +177,13 @@ const LL=()=>S.round=='F'?S.P.filter(p=>p.fin):S.P.filter(p=>p.lvl>=S.round);
 function r1(){const L=LL(),ns=L.filter(pkv).length,F=S.round=='F',k=S.round,
 tabs=Array.from({length:S.tabs},(_,i)=>`<button data-a=tab data-v=${i+1} class="${k==i+1?'on':''}">Pilihan ke-${i+1}<em>${S.P.filter(p=>p.lvl>=i+1).length}</em></button>`).join('')+`<button data-a=addtab>＋ Tambah</button><button data-a=tab data-v=F class="${F?'on':''}">⭐ Pilihan Final<em>${S.P.filter(p=>p.fin).length}</em></button><button data-a=fin class=pri>Lanjut ke Crop ▶</button>`,
 acts=F?`<button data-a=fin class=pri>Lanjut ke Crop ▶</button>`:`<button data-a=tab data-v=${k<S.tabs?k+1:'F'} class=pri>${k<S.tabs?'Ke Pilihan ke-'+(k+1):'Ke Pilihan Final'} ▶</button>`;
-$('#m').innerHTML=`<div class=stk><div class=bar><button data-a=dir class=warn>📂 Pilih Folder</button><span>${L.length} foto${F?' final':` · ${ns} dipilih ★`}</span><button data-a=cmp class=on>⚖ Bandingkan (${S.cmp.size}/4)</button><button data-a=reup class=warn>🔄 Upload Ulang Photo</button></div><div class="bar tabs">${tabs}</div></div>${L.length?`<div class=grid>${L.map(card).join('')}</div>`:(S.P.length?'<p style=text-align:center>Belum ada foto di pilihan ini. Tandai ★ di pilihan sebelumnya lalu klik “Lanjut”.</p>':EMPTY)}${S.P.length?`<div class=bb><div class=acts>${acts}</div></div>`:''}`}
-const EMPTY=`<div class=empty><div class=hero><div class=ico><svg viewBox="0 0 48 48" width="56" height="56" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17h5l2.5-4h13l2.5 4h5a3 3 0 0 1 3 3v15a3 3 0 0 1-3 3H10a3 3 0 0 1-3-3V20a3 3 0 0 1 3-3z"/><circle cx="24" cy="27" r="7"/><circle cx="24" cy="27" r="2.5" fill="#fff"/></svg></div><h2>Mulai pilih foto terbaik Anda</h2><p>Tambahkan foto dari komputer, lalu seleksi, bandingkan, crop, beri bingkai, dan simpan.</p><div class=chips><span>JPG</span><span>CR2</span><span>CR3</span><span>NEF</span><span>ARW</span></div><div class=cta><button data-a=dir class=warn>📂 Pilih Folder</button></div><small>atau seret &amp; lepas banyak folder / file sekaligus ke halaman ini — jumlah tidak dibatasi</small><div class=steps><span>① Seleksi</span><i>›</i><span>② Crop</span><i>›</i><span>③ Bingkai</span><i>›</i><span>④ Simpan</span></div></div></div>`;
+$('#m').innerHTML=`<div class=stk><div class=bar><button data-a=add class=warn>📷 Pilih Foto</button><span>${L.length} foto${F?' final':` · ${ns} dipilih ★`}</span><button data-a=cmp class=on>⚖ Bandingkan (${S.cmp.size}/4)</button><button data-a=reup class=warn>🔄 Upload Ulang Photo</button></div><div class="bar tabs">${tabs}</div></div>${L.length?`<div class=grid>${L.map(card).join('')}</div>`:(S.P.length?'<p style=text-align:center>Belum ada foto di pilihan ini. Tandai ★ di pilihan sebelumnya lalu klik “Lanjut”.</p>':EMPTY)}${S.P.length?`<div class=bb><div class=acts>${acts}</div></div>`:''}`}
+const EMPTY=`<div class=empty><div class=hero><div class=ico><svg viewBox="0 0 48 48" width="56" height="56" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17h5l2.5-4h13l2.5 4h5a3 3 0 0 1 3 3v15a3 3 0 0 1-3 3H10a3 3 0 0 1-3-3V20a3 3 0 0 1 3-3z"/><circle cx="24" cy="27" r="7"/><circle cx="24" cy="27" r="2.5" fill="#fff"/></svg></div><h2>Mulai pilih foto terbaik Anda</h2><p>Tambahkan foto dari HP Anda, lalu seleksi, bandingkan, crop, beri bingkai, dan simpan.</p><div class=chips><span>JPG</span><span>CR2</span><span>CR3</span><span>NEF</span><span>ARW</span></div><div class=cta><button data-a=add class=warn>📷 Pilih Foto</button></div><small>Ketuk Pilih Foto, lalu pilih banyak foto sekaligus dari galeri atau file manager</small><div class=steps><span>① Seleksi</span><i>›</i><span>② Crop</span><i>›</i><span>③ Bingkai</span><i>›</i><span>④ Simpan</span></div></div></div>`;
 document.addEventListener('dragover',e=>e.preventDefault());document.addEventListener('drop',async e=>{e.preventDefault();const ens=[...e.dataTransfer.items].map(i=>i.webkitGetAsEntry&&i.webkitGetAsEntry()).filter(Boolean),out=[];if(!ens.length)return addFiles(e.dataTransfer.files);for(const en of ens)await walk(en,out);addFiles(out)});
 /* ---------- viewer & compare ---------- */
 function openV(ids,i,cm){V={ids,i,one:!cm,s:1,x:0,y:0};$('#ov').hidden=0;drawV()}
 async function drawV(){const sh=V.one?[V.ids[V.i]]:V.ids,n=sh.length,P=sh.map(id=>S.P.find(p=>p.id==id));await Promise.all(P.map(gu));if(!V)return;
-$('#ov').innerHTML=`<div class=bar><button data-a=close>✕ Tutup</button><button data-a=reset>Reset zoom</button>${V.one?'<button data-a=pv>◀</button><button data-a=nx>▶</button>':''}<span style="opacity:.7">Scroll = zoom · Geser = pindah · Klik 2x = zoom in/out${n>1?' · semua foto ikut zoom bersamaan':''}</span></div><div class=panes style="grid-template-columns:repeat(${n==3?3:Math.min(n,2)},1fr);grid-template-rows:repeat(${n>2&&n!=3?2:1},1fr)">${P.map(p=>`<div class=pane data-i=${p.id}><div class=pt><button data-a=rl>⟲</button><button data-a=rr>⟳</button><button data-a=sel class="${pkv(p)?'on':''}">${S.round=='F'?'✕ Keluarkan':'★ '+(pkv(p)?'Dipilih':'Pilih')}</button><span class=nm style="background:#000a">${p.name}</span></div><img src="${p.du}"></div>`).join('')}</div>`;tf()}
+$('#ov').innerHTML=`<div class=bar><button data-a=close>✕ Tutup</button><button data-a=reset>Reset zoom</button>${V.one?'<button data-a=pv>◀</button><button data-a=nx>▶</button>':''}<span style="opacity:.7">Scroll = zoom · Geser = pindah · Klik 2x = zoom in/out${n>1?' · semua foto ikut zoom bersamaan':''}</span></div><div class="panes n${n}" style="grid-template-columns:repeat(${n==3?3:Math.min(n,2)},1fr);grid-template-rows:repeat(${n>2&&n!=3?2:1},1fr)">${P.map(p=>`<div class=pane data-i=${p.id}><div class=pt><button data-a=rl>⟲</button><button data-a=rr>⟳</button><button data-a=sel class="${pkv(p)?'on':''}">${S.round=='F'?'✕ Keluarkan':'★ '+(pkv(p)?'Dipilih':'Pilih')}</button><span class=nm style="background:#000a">${p.name}</span></div><img src="${p.du}"></div>`).join('')}</div>`;tf()}
 const tf=()=>document.querySelectorAll('#ov .pane img').forEach(i=>i.style.transform=`translate(${V.x}px,${V.y}px) scale(${V.s})`);
 function zoomAt(pn,e,k){const r=pn.getBoundingClientRect(),cx=e.clientX-r.left-r.width/2,cy=e.clientY-r.top-r.height/2,ns=cp(V.s*k,1,30),kk=ns/V.s;V.x=cx-(cx-V.x)*kk;V.y=cy-(cy-V.y)*kk;V.s=ns;if(ns==1)V.x=V.y=0;tf()}
 async function rot(p,d){p.rot=(p.rot+d+360)%360;p.cr=null;await apply(p);V?drawV():0;R()}
@@ -184,19 +212,14 @@ document.querySelectorAll('[data-f]').forEach(cv=>{const f=S.fr[cv.dataset.f],x=
 document.querySelectorAll('[data-p]').forEach(cv=>paint(S.fin.find(p=>p.id==cv.dataset.p),cv,320))}
 /* ---------- langkah 4: simpan ---------- */
 function r4(){$('#m').innerHTML=`<div class=bar><b>${S.fin.length} foto final</b></div><div class=grid style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">${S.fin.map(p=>{const c=ec(p),f=S.fr[p.fr??-1];return`<div class=card><img src="${p.th}" style=cursor:default><div class=nm>${p.name} — ${c.w}×${c.h} cm ${c.land?'landscape':'portrait'} — ${f?f.n:'tanpa bingkai'}</div></div>`}).join('')}</div>
-<div class=bar><label><input type=checkbox id=k1 checked> Salin file asli (ekstensi asli, tanpa ZIP)</label><label><input type=checkbox id=k2 checked> Hasil crop + bingkai (.jpg)</label><button class=pri data-a=save>💾 Simpan ke Folder Komputer…</button><span id=lg></span></div>
-<div class=bar style=opacity:.7>Catatan: file RAW (CR2/CR3/NEF/ARW) disalin utuh tanpa diubah. Hasil crop dibuat dari JPEG preview di dalam RAW dan disimpan sebagai .jpg.</div>`}
-async function save(fb){const k1=$('#k1').checked,k2=$('#k2').checked;let dir=null;
-$('#lg').textContent='⏳ Membuka jendela pilih folder…';
-if(window.showDirectoryPicker){try{dir=await showDirectoryPicker({mode:'readwrite'})}catch(e){$('#lg').innerHTML=e.name=='AbortError'?'Dibatalkan — belum ada yang disimpan.':'<span style=color:#ffb86b>⚠ Tidak bisa memakai folder itu ('+e.name+': '+e.message+'). Buat folder baru dulu (mis. D:\\FotoFinal) lalu pilih folder itu — jangan pilih Desktop / Documents / Downloads langsung.</span>';return}}else if(!fb){const why=!window.isSecureContext?'Halaman dibuka lewat alamat yang dianggap tidak aman ('+location.origin+'). Buka lewat <b>http://localhost/...</b> atau <b>http://127.0.0.1/...</b> (bukan alamat IP / nama komputer).':'Browser ini tidak mendukung jendela pilih folder (Firefox / Safari / Brave bawaan). Gunakan <b>Google Chrome</b> atau <b>Microsoft Edge</b>.';$('#lg').innerHTML='<span style=color:#ffb86b>⚠ '+why+'</span> <button data-a=dlall>Tetap unduh satu per satu</button>';return}
-const used=new Set(),un=n=>{let m=n,i=1;while(used.has(m.toLowerCase()))m=n.replace(/(\.\w+)$/,'_'+(++i)+'$1');used.add(m.toLowerCase());return m};
-const wr=async(n,b)=>{if(dir){const h=await dir.getFileHandle(n,{create:true}),s=await h.createWritable();await s.write(b);await s.close()}else{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();await new Promise(r=>setTimeout(r,500))}};
-let txt='DAFTAR FOTO FINAL\n\n',i=0;
-try{for(const p of S.fin){$('#lg').textContent=`Menyimpan ${++i}/${S.fin.length}: ${p.name}`;const c=ec(p),f=S.fr[p.fr??-1];
-if(k1)await wr(un(p.name),p.file);
-if(k2){const cv=document.createElement('canvas');await paint(p,cv,0,true);const b=await new Promise(r=>cv.toBlob(r,'image/jpeg',.95));await wr(un(p.name.replace(/\.\w+$/,'')+`_crop_${c.w}x${c.h}${f?'_'+f.n.replace(/\s/g,''):''}.jpg`),b)}
+<div class=bar><button class=pri data-a=save>💾 Siapkan Hasil Foto</button></div><div class=bar id=lg style="min-height:44px"></div><div class=bar style=opacity:.75>Foto asli tetap ada di HP Anda. Yang disiapkan adalah hasil crop + bingkai (.jpg). Setelah siap, ketuk <b>Simpan / Bagikan ke HP</b> lalu pilih <b>Simpan ke Foto / Berkas</b>.</div></div>`}
+async function save(){const lg=$('#lg');lg.textContent='⏳ Menyiapkan file…';S.out=[];let txt='DAFTAR FOTO FINAL\n\n',i=0;const used=new Set(),un=n=>{let m=n,k=1;while(used.has(m.toLowerCase()))m=n.replace(/(\.\w+)$/,'_'+(++k)+'$1');used.add(m.toLowerCase());return m};
+try{for(const p of S.fin){lg.textContent=`Menyiapkan ${++i}/${S.fin.length}: ${p.name}`;await new Promise(r=>setTimeout(r,30));const c=ec(p),f=S.fr[p.fr??-1],cv=document.createElement('canvas');await paint(p,cv,0,true);const b=await new Promise(r=>cv.toBlob(r,'image/jpeg',.92));
+S.out.push(new File([b],un(p.name.replace(/\.\w+$/,'')+`_crop_${c.w}x${c.h}${f?'_'+f.n.replace(/\s/g,''):''}.jpg`),{type:'image/jpeg'}));cv.width=cv.height=1;
 txt+=`${p.name} | ${c.w}x${c.h} cm | ${c.land?'Landscape':'Portrait'} | Bingkai: ${f?f.n:'-'}\n`}
-await wr('daftar_foto_final.txt',new Blob([txt],{type:'text/plain'}));$('#lg').textContent='✅ Selesai disimpan.'}catch(e){$('#lg').textContent='⚠ Gagal: '+e.message}}
+S.out.push(new File([txt],'daftar_foto_final.txt',{type:'text/plain'}));
+lg.innerHTML='✅ '+S.out.length+' file siap. <button class=pri data-a=share>📲 Simpan / Bagikan ke HP</button> <button data-a=dlall>⬇ Unduh satu per satu</button>'}catch(e){lg.textContent='⚠ Gagal: '+e.message}}
+async function dl(){for(const f of S.out){const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;a.click();await new Promise(r=>setTimeout(r,700))}toast('Selesai. Cek folder Download / Berkas di HP.')}
 /* ---------- render & event ---------- */
 function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),3000)}
 const sh=()=>document.documentElement.style.setProperty('--hh',document.querySelector('header').offsetHeight+'px');addEventListener('resize',sh);document.fonts&&document.fonts.ready.then(sh);
@@ -211,7 +234,7 @@ case'rl':rot(p,-90);break;case'rr':rot(p,90);break;
 case'sel':{const k=S.round;if(k=='F')p.fin=0;else if(pk(p)){p.fin=0;if(k<S.tabs)p.lvl=k}else if(k<S.tabs)p.lvl=k+1;else p.fin=1;V?drawV():0;render();break}
 case'cp':if(S.cmp.has(p.id))S.cmp.delete(p.id);else if(S.cmp.size>=4)toast('Maksimal 4 foto untuk dibandingkan');else S.cmp.add(p.id);render();break;
 case'cmp':if(S.cmp.size<2)return toast('Tandai 2–4 foto dengan tombol ⚖ dulu');openV([...S.cmp],0,1);break;
-case'reup':S.rep=1;$('#f2').click();break;
+case'reup':S.rep=1;$('#f1').click();break;
 case'tab':S.round=v=='F'?'F':+v;render();break;
 case'addtab':S.tabs++;S.P.forEach(q=>{if(q.fin)q.lvl=S.tabs});S.round=S.tabs;render();break;
 case'fin':{let t;if(S.round=='F')t=S.P.filter(q=>q.fin);else{const pc=L.filter(pkv);t=pc.length?pc:(S.round==1?[]:L)}if(!t.length)return toast(S.round=='F'?'Pilihan Final masih kosong':'Tandai ★ foto yang dipilih dulu');S.fin=t;S.ci=0;S.step=2;render();break}
@@ -224,18 +247,24 @@ case'ori':{const c=ec(S.fin[S.ci]);c.land=v=='1';c.z=1;render();break}
 case'all':{const c=ec(S.fin[S.ci]);S.fin.forEach(q=>{const d=ec(q);Object.assign(d,{sz:c.sz,w:c.w,h:c.h,land:q.w>q.h,z:1,u:q.w/2,v:q.h/2})});render();break}
 case'upf':$('#f3').click();break;
 case'fall':S.fin.forEach(q=>q.fr=+v);render();break;
-case'save':save();break;case'dlall':save(1);break}}
+case'save':save();break;case'dlall':dl();break;case'share':{const fs=S.out||[];if(navigator.canShare&&navigator.canShare({files:fs}))navigator.share({files:fs,title:'Foto final TarzanPhoto'}).catch(e=>{if(e.name!='AbortError')toast('Gagal membagikan: '+e.message)});else toast('Browser ini tidak bisa membagikan file. Pakai tombol Unduh.');break}}}
 document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||t.tagName=='SELECT')return;const i=+(t.closest('[data-i]')?.dataset.i||0);act(t.dataset.a,t.dataset.v,S.P.find(q=>q.id==i))});
 document.addEventListener('change',e=>{const t=e.target;if(t.dataset.a=='fs'){S.fin.find(q=>q.id==t.closest('[data-i]').dataset.i).fr=+t.value;render()}
 if(t.id=='cw'||t.id=='ch'){const p=S.fin[S.ci],c=ec(p);c.w=Math.max(1,+$('#cw').value);c.h=Math.max(1,+$('#ch').value);c.sz='c';c.z=1;c.u=p.w/2;c.v=p.h/2;render()}});
 document.addEventListener('wheel',e=>{const pn=e.target.closest('.pane');if(pn&&V){e.preventDefault();zoomAt(pn,e,e.deltaY<0?1.2:1/1.2)}else if(e.target.closest('#st')){e.preventDefault();const c=S.fin[S.ci].cr;c.z=cp(c.z*(e.deltaY<0?1.1:1/1.1),1,12);cl()}},{passive:false});
-document.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;if(e.target.closest('.pane')||e.target.closest('#st'))D={x:e.clientX,y:e.clientY,pane:!!e.target.closest('.pane')}});
-addEventListener('pointermove',e=>{if(!D)return;const dx=e.clientX-D.x,dy=e.clientY-D.y;D.x=e.clientX;D.y=e.clientY;if(D.pane){V.x+=dx;V.y+=dy;tf()}else{const c=S.fin[S.ci].cr;c.u-=dx/CS.sc;c.v-=dy/CS.sc;cl()}});
-addEventListener('pointerup',()=>D=null);
-document.addEventListener('dblclick',e=>{const pn=e.target.closest('.pane');if(pn&&V){if(V.s>1){V.s=1;V.x=V.y=0;tf()}else zoomAt(pn,e,2.5)}else if(e.target.closest('#st')){const p=S.fin[S.ci],c=p.cr;c.z=1;c.u=p.w/2;c.v=p.h/2;cl()}});
+const PT=new Map();let PL=null,LT=0,LX=0,LY=0,TD=0;
+const czoom=k=>{const c=S.fin[S.ci].cr;c.z=cp(c.z*k,1,12);cl()};
+function dbl(el,k,e){if(k=='p'){if(V.s>1){V.s=1;V.x=V.y=0;tf()}else zoomAt(el,e,2.5)}else{const p=S.fin[S.ci],c=p.cr;c.z=1;c.u=p.w/2;c.v=p.h/2;cl()}}
+document.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;const pn=e.target.closest('.pane'),st=e.target.closest('#st');if(!pn&&!st)return;PT.set(e.pointerId,{x:e.clientX,y:e.clientY});if(PT.size==1)D={k:pn?'p':'c',el:pn||st,t:Date.now(),mv:0};if(PT.size==2){const[a,b]=[...PT.values()];PL=Math.hypot(a.x-b.x,a.y-b.y)}});
+addEventListener('pointermove',e=>{if(!D||!PT.has(e.pointerId))return;const o=PT.get(e.pointerId),nx=e.clientX,ny=e.clientY;PT.set(e.pointerId,{x:nx,y:ny});D.mv+=Math.abs(nx-o.x)+Math.abs(ny-o.y);
+if(PT.size>=2){const[a,b]=[...PT.values()],d=Math.hypot(a.x-b.x,a.y-b.y),k=PL?d/PL:1;PL=d;D.mv=99;if(D.k=='p')zoomAt(D.el,{clientX:(a.x+b.x)/2,clientY:(a.y+b.y)/2},k);else czoom(k);return}
+const dx=nx-o.x,dy=ny-o.y;if(D.k=='p'){V.x+=dx;V.y+=dy;tf()}else{const c=S.fin[S.ci].cr;c.u-=dx/CS.sc;c.v-=dy/CS.sc;cl()}});
+const up=e=>{if(!PT.has(e.pointerId))return;PT.delete(e.pointerId);PL=null;if(D&&!PT.size){const q=D;D=null;if(e.pointerType=='touch'&&q.mv<12&&Date.now()-q.t<350){const n=Date.now();if(n-LT<350&&Math.hypot(e.clientX-LX,e.clientY-LY)<40){LT=0;TD=n;dbl(q.el,q.k,e)}else{LT=n;LX=e.clientX;LY=e.clientY}}}};
+addEventListener('pointerup',up);addEventListener('pointercancel',up);
+document.addEventListener('dblclick',e=>{if(Date.now()-TD<700)return;const pn=e.target.closest('.pane');if(pn&&V){if(V.s>1){V.s=1;V.x=V.y=0;tf()}else zoomAt(pn,e,2.5)}else if(e.target.closest('#st')){const p=S.fin[S.ci],c=p.cr;c.z=1;c.u=p.w/2;c.v=p.h/2;cl()}});
 addEventListener('keydown',e=>{if(!V)return;if(e.key=='Escape')act('close');if(V.one&&e.key=='ArrowRight')act('nx');if(V.one&&e.key=='ArrowLeft')act('pv')});
 addEventListener('resize',()=>{if(S.step==2&&S.fin.length)cl()});
-$('#f1').onchange=$('#f2').onchange=e=>{const fl=[...e.target.files];e.target.value='';if(S.rep&&fl.some(f=>/\.(jpe?g|cr2|cr3|nef|arw)$/i.test(f.name))){Q.length=0;S.P=[];S.fin=[];S.cmp.clear();LR.length=0;S.round=1;S.tabs=3;S.step=1;render()}S.rep=0;addFiles(fl)};
+$('#f1').onchange=$('#f2').onchange=e=>{const fl=[...e.target.files];e.target.value='';if(S.rep&&fl.some(f=>/\.(jpe?g|png|webp|cr2|cr3|nef|arw)$/i.test(f.name))){Q.length=0;S.P=[];S.fin=[];S.cmp.clear();LR.length=0;S.round=1;S.tabs=3;S.step=1;render()}S.rep=0;addFiles(fl)};
 $('#f3').onchange=async e=>{for(const f of e.target.files)S.fr.push({n:f.name.replace(/\.\w+$/,''),img:await ldi(await rd(f))});e.target.value='';render()};
 render();
 </script></body></html>
